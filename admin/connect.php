@@ -23,21 +23,18 @@ exit();
 // $ex = $pdo->query($query);
 if(isset($_GET['category'])){
   $category = $_GET['category'];
-  //echo 'set'; exit();
-  echo $category;
   $query = "SELECT * FROM tbl_products WHERE product_category = :category";
-  //$query = "SELECT * FROM tbl_products WHERE product_category = 'Womens'";
+  $get_products = $pdo->prepare($query);
+  $get_products->execute(
+    array(
+        ':category' => $category
+      )
+    );
+}else{
+  $query = "SELECT * FROM tbl_products";
+  $get_products = $pdo->query($query);
 }
-//$get_products = $pdo->query($query);
-$get_products = $pdo->prepare($query);
 
-$get_products->execute(
-  array(
-      ':category' => $category
-    )
-  );
-
-//$query = "SELECT * FROM tbl_products";
 
 $results = array();
 while($row = $get_products->fetch(PDO::FETCH_ASSOC)) {
